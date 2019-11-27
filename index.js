@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const util = require("util");
+const http = require("http");
 
 const writeFileAsync = util.promisify(fs.writeFile);
 // const generateHTML = require("./index");
@@ -107,14 +108,18 @@ function buildteam() {
   ]).then(function (res) {
     console.log(res)
     if (res.contact === "engineer") {
-      promptengineer
+      promptengineer()
+     
     }
     if (res.contact === "intern") {
-      promptintern
+      promptintern()
+  
     }
     else if (res.contact === "finish") {
-    
-     getHtmlTeam()
+      answers.push(finish)
+      buildteam()
+ 
+    //  getHtmlTeam()
 
     }
   })
