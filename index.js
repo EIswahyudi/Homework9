@@ -173,7 +173,7 @@ function getHtmlTeam() {
   }
   html += close;
 
-  writeFileAsync("./output/team.html", html);
+  writeFileAsync("./output/index.html", html);
 
 };
 
