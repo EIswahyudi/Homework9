@@ -1,10 +1,11 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const util = require("util");
-const http = require("http");
-
+const generateHTML = require("./lib/generateHTML");
 const writeFileAsync = util.promisify(fs.writeFile);
-// const generateHTML = require("./index");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 
 var answers = []
 
@@ -119,29 +120,60 @@ function buildteam() {
       answers.push(finish)
       buildteam()
  
-    //  getHtmlTeam()
+     getHtmlTeam()
+     return;
 
     }
   })
 }
 promptManager()
 
-function generateHTML() {
+let html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team</title>
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/4d07055d3e.js" crossorigin=“anonymous”></script>
+    <style>
+        .shadow {
+            box-shadow: 5px 5px 5px grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0 mb-0">
+        <div class="jumbotron jumbotron-fluid bg-danger text-light">
+            <div class="container text-center">
+                <h1 class="display-4">My Team</h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center" id="cards">
+`;
 
-return`<!DOCTYPE html>
-      <html lang="en">
-         <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"/>
-            <link href="https://fonts.googleapis.com/css?family=BioRhyme|Cabin&display=swap" rel="stylesheet">
-            <title>Document</title>
-            <style>
 
-
-    writeFileAsync("team.html", html);
+let close = `
+      </div> 
+      </div> 
     </body>
-    </html>`
-}
+  </html>
+            `;
+
+function getHtmlTeam() {
+  let card = ""
+  for (let i = 0; i < teamArr.length; i++) {
+    card = generateHTML(teamArr[i])
+    html += card;
+  }
+  html += close;
+
+  writeFileAsync("./output/team.html", html);
+
+};
+
